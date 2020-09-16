@@ -21,7 +21,6 @@ class Gate(object):
         # Gate Name
         self.name= name 
         self.com = enlace(self.name)
-        self.message = b''
         self.messageReceived = b''
 
     def run(self):
@@ -52,9 +51,9 @@ class Gate(object):
         """Inicialização de Conversa. Pode enviar uma string em bytes específica, bem semelhante ao protocolo"""
         self.message = message
 
-    def sendMessage(self):
-        """send message"""
-        self.com.sendData(self.message)
+    def sendPackage(self,package):
+        """send package"""
+        self.com.sendData(package)
         print('+--------------------------------+')
         print('|       Mensagem Enviada         |')
         print('+--------------------------------+')

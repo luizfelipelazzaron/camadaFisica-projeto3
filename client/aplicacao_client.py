@@ -4,6 +4,8 @@
 #11/08/2020
 #Aplicação do Client
 ####################################################
+#Acesssing gates by the code: sudo chmod 666 /dev/tnt*
+
 import time
 from client import Client
 from message import Message
@@ -21,11 +23,10 @@ def main():
 
         package = Package()
         package.setEop()
-        package.setPayloadMessage(message.message)
-        package.setHead(1,1)
+        package.setHead(1,1,message.message)
         package.setPackage()
-        client.setMessage(package.package)
-        client.sendMessage()
+        
+        client.sendPackage(package.package)
 
         # client.setFile()
         # client.sliceFile()
@@ -33,8 +34,7 @@ def main():
         # package = Package()
         # package.setHead(1,12)
 
-        # message = Message()
-        # message.handshake()
+
 
 
         # client = Client('COM1')

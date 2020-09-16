@@ -12,23 +12,30 @@ class Package(object):
 
     def setPackage(self):
         self.package = self.head #+ self.payload + self.eop
-        self.payloadWidth = len(self.package)
+        self.payloadWidth = len(self.payload)
 
-    def setHead(self, n, t):
+    def setHead(self, n, t,message):
         """
         n is the package number ,
         t is the total of packages,
         type(n) = int,
-        type(t) = int
+        type(t) = int,
+        type(message) = int
         """
         packageNumberWidth = 2
-        totalOfPackagesWidth = 4
+        totalOfPackagesWidth = 2
+        messageWidth = 2
+        payloadWidth = self.headWidth - (packageNumberWidth +totalOfPackagesWidth + messageWidth)
+
+
          #packageNumberWidth + totalOfPackagesWidth must be smaller than headWidth
         packageNumber = self.convertIntToBytes(n,packageNumberWidth)
         totalOfPackages = self.convertIntToBytes(t,totalOfPackagesWidth)
-        payloadWidth = self.convertIntToBytes(self.payloadWidth,self.headWidth - totalOfPackagesWidth - packageNumberWidth)
+        message = self.convertIntToBytes(message,totalOfPackagesWidth)
+        payloadWidth = self.convertIntToBytes(self.payloadWidth,payloadWidth)
 
-        self.head = packageNumber +  totalOfPackages + payloadWidth #because len(self.head) == 10 is a project restriction
+        self.head = packageNumber +  totalOfPackages + message + payloadWidth #because 
+
 
     def setPayload(self,n,packageList):
         """
@@ -38,10 +45,6 @@ class Package(object):
             type(packageList) = list
         """
         self.payload = packageList[n]
-
-    def setPayloadMessage(self,message):
-        """type(message)=bytes"""
-        self.payload = message
 
     def convertIntToBytes(self,integer,lenght):
         """
