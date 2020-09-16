@@ -66,7 +66,10 @@ class Gate(object):
         type(size) = int
         return the message received
         """
-        self.messageReceived =  self.com.getData(size)
+        self.messageReceived = self.com.getData(size)
+        print('+--------------------------------+')
+        print('|       Mensagem Recebida        |')
+        print('+--------------------------------+')
 
     # def prepareMessage(self):
     #     """prepare message"""

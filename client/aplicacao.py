@@ -9,20 +9,33 @@ from client import Client
 from message import Message
 from package import Package
 
-packageNumber = 3 #arbitrary
+serialName = "/dev/tnt1"
 
 def main():
     try:
-        client = Client('COM1')
-        client.setFile()
-        client.sliceFile(packageNumber)
+        client = Client(serialName)
+
+        message = Message()
+        message.handshake()
+
+        package = Package()
+        package.setEop()
+        package.setPayloadMessage(message.message)
+        package.setHead(1,1)
+        package.setPackage()
+        client.setMessage(package.package)
+        client.sendMessage()
+
+        # client.setFile()
+        # client.sliceFile()
 
         # package = Package()
         # package.setHead(1,12)
 
         # message = Message()
         # message.handshake()
-        
+
+
         # client = Client('COM1')
         # client.run()
         # client.setMessage("handshake")
