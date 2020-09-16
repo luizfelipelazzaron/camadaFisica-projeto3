@@ -14,6 +14,7 @@ serialName = "/dev/tnt1"
 def main():
     try:
         client = Client(serialName)
+        client.openGate()
 
         message = Message()
         message.handshake()

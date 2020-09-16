@@ -58,6 +58,7 @@ class Gate(object):
         print('+--------------------------------+')
         print('|       Mensagem Enviada         |')
         print('+--------------------------------+')
+        print(self.message)
 
     def receiveMessage(self,size):
         """

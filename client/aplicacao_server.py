@@ -5,20 +5,18 @@
 #Aplicação do Client
 ####################################################
 import time
+from client import Client
 from message import Message
 from package import Package
-from gate import Gate
 
 serialName = "/dev/tnt0"
 
 def main():
     try:
         server = Gate(serialName)
-        server.openGate()
         message = Message()
         message.handshake()
-        server.receiveMessage(10)
-
+        server.receiveMessage(4)
     except Exception as e:
         print("Um erro aconteceu:")
         print('Failed to upload to ftp: '+str(e))

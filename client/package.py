@@ -11,7 +11,7 @@ class Package(object):
         self.eopWidth = 4 #project restriction
 
     def setPackage(self):
-        self.package = self.head + self.payload + self.eop
+        self.package = self.head #+ self.payload + self.eop
         self.payloadWidth = len(self.package)
 
     def setHead(self, n, t):

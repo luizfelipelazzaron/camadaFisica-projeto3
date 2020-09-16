@@ -23,6 +23,7 @@ class Gate(object):
         self.com = enlace(self.name)
         self.message = b''
         self.messageReceived = b''
+        self.widthPackageExpected = 0
 
     def run(self):
         """Run!!"""
@@ -70,6 +71,7 @@ class Gate(object):
         print('+--------------------------------+')
         print('|       Mensagem Recebida        |')
         print('+--------------------------------+')
+        print(self.messageReceived)
 
     # def prepareMessage(self):
     #     """prepare message"""
