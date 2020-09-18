@@ -39,6 +39,8 @@ def main():
 
         while choice == "connection":
             for n in range(1,10):#pois são 9 pacotes
+                variable = True
+                while variable: 
                     print("pacote a ser enviado: {}".format(n))
                     client = Client(serialName)
                     client.openGate()
@@ -48,8 +50,18 @@ def main():
                     package.setPackagePayload(client.packageList,n,9) #pois são 9 pacotes
                     client.sendPackage(package.package)
                     client.com.rx.clearBuffer()
-                    client.receiveMessage()
-                    client.closeGate()
+                    client.receiveMessage(n)
+                    if client.messageReceived == 125:
+                        print('+-------------------------------------+')
+                        print('|     Server recebeu o pacote {0}     |'.format(n))
+                        print('+-------------------------------------+')
+                        client.closeGate()
+                        break
+                    else:
+                        print('+----------------------------------------------------+')
+                        print('|     Server não recebeu o {0}. Preciso reenviar     |'.format(n))
+                        print('+----------------------------------------------------+')
+                        client.closeGate()
             break
 
         client = Client(serialName)

@@ -97,20 +97,21 @@ class Client(Gate):
 
 
 
-    def receiveMessage(self):
+    def receiveMessage(self,n):
+        self.packageCounter = n
         print("getIsEmpty:{}".format(self.com.rx.getIsEmpty()))
         while self.com.rx.getIsEmpty():
             print("esperando resposta..")
             time.sleep(1)
         else:
             print("Resposta Recebida..")
+            self.packageCounter = n
             receivedHead, number =  self.com.getData(self.headWidth)
             self.setHeadReceived(receivedHead)
             print("mensagem recebida: {}".format(self.messageReceived))
             if self.payloadWidth != 0:
                 self.payloadReceived, number =  self.com.getData(self.payloadWidth)
             self.eopReceived, number = self.com.getData(self.eopWidth)
-            self.checkPackage()
 
 
 
@@ -124,6 +125,8 @@ class Client(Gate):
         if self.packageCounter != 0:
             None
         else:
+            print("self.packageCounter{}".format(self.packageCounter))
+            print("self.packageCounterReceived{}".format(self.packageCounterReceived))
             checkPackageNumber = self.packageCounter == self.packageCounterReceived
             checkTotalPackage = self.totalPackages == self.totalPackagesReceived
             checkEop = self.eopCode == self.convertBytesToInt(self.eopReceived)

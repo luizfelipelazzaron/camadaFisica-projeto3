@@ -12,6 +12,8 @@ from message import Message
 from package import Package
 
 serialName = "/dev/tnt0"
+filePath = r"/home/borg/Documents/graduacao/camadaFisicaDaComputacao/projeto3/camadaFisica-projeto3/client/imageReceived.png"
+
 
 def main():
     try:
@@ -31,6 +33,7 @@ def main():
                 server.sendPackage(package.package)
                 server.closeGate()
                 state = 'receivePackages'
+                break
 
         lista = []
         while state == "receivePackages":
@@ -42,7 +45,9 @@ def main():
                 lista.append(server.payloadReceived)
                 package = Package()
                 package.setPackage(2,counter,9)
-                print("contador: {}".format(counter))
+                print('+------------------------- ---+')
+                print('|     Pacote {0} recebido     |'.format(counter))
+                print('+-----------------------------+')
                 server.sendPackage(package.package)
                 server.closeGate()
                 counter += 1
@@ -54,6 +59,7 @@ def main():
                 server.closeGate()
                 break
             print(lista)
+            
 
 
         server = Server(serialName)
@@ -63,6 +69,16 @@ def main():
         print('+---------------------------------+')
         server.receivePackage()
         server.closeGate()
+
+        file = b''
+        for element in lista:
+            file = file + element
+        print(file)
+
+        path = open(filePath, 'wb')
+        path.write(file)
+        path.close()
+
 
 
         print('+--------------------------------+')
