@@ -12,25 +12,49 @@ class Package(object):
         self.eopWidth = 4 #project restriction
         
 
-    def setPackage(self,stage):
+    def setPackage(self,stage,N,T):
         "stage is an int"
+        message = Message()
         if stage == 0:
-            message = Message()
             message.handshake()
-            self.setHead(0,0,message.message)
-            self.setEop()
+        elif stage == 1:
+            message.work()
+        elif stage == 2:
+            message.success()
+        elif stage == 3:
+            message.failure()
+        elif stage == 4:
+            message.bye()
         else: 
             None
+        self.setHead(N,T,message.message)
+        self.setEop()
         print('+--------------------------------+')
         print('|     Preparando o Pacote        |')
         print('+--------------------------------+')
-
         print("head:{}".format(self.head))
         print("payload:{}".format(self.payload))
         print("eop:{}".format(self.eop))
 
         self.package = self.head + self.payload + self.eop
         self.payloadWidth = len(self.payload)
+
+
+    def setPackagePayload(self,packageList,N,T):
+        message = Message()
+        message.work()
+        self.setPayload(N,packageList)
+        self.setHead(N,T,message.message)
+        self.setEop()
+        print('+--------------------------------+')
+        print('|     Preparando o Pacote        |')
+        print('+--------------------------------+')
+        print("head:{}".format(self.head))
+        print("payload:{}".format(self.payload))
+        print("eop:{}".format(self.eop))
+
+        self.package = self.head + self.payload + self.eop
+
 
     def setHead(self, n, t,message):
         """
@@ -59,7 +83,9 @@ class Package(object):
             type(n) = int
             type(packageList) = list
         """
-        self.payload = packageList[n]
+        self.payload = packageList[n-1]
+        self.payloadWidth = len(self.payload)
+        print("payloadWidth:{}".format(self.payloadWidth))
 
     def convertIntToBytes(self,integer,lenght):
         """

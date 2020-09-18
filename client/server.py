@@ -25,7 +25,7 @@ class Server(Gate):
         self.message = Message()
 
         self.packageCounter = 0
-        self.totalPackages = 0
+        self.totalPackages = 9 #número de pacotes
         self.packageCounterReceived = 0
         self.totalPackagesReceived = 0
         self.messageReceived = 0
@@ -49,14 +49,14 @@ class Server(Gate):
         print('+--------------------------------+')
         print('|       Head Recebido            |')
         print('+--------------------------------+')
-        self.setHead(receivedHead)
+        self.setHeadReceived(receivedHead)
         if self.payloadWidth != 0:
             self.payloadReceived, number =  self.com.getData(self.payloadWidth)
         self.eopReceived, number = self.com.getData(self.eopWidth)
         self.checkPackage()
             
 
-    def setHead(self,head):
+    def setHeadReceived(self,head):
         self.packageCounterReceived = self.convertBytesToInt(head[0:2])
         self.totalPackagesReceived = self.convertBytesToInt(head[2:4])
         self.messageReceived = self.convertBytesToInt(head[4:6])
@@ -64,12 +64,11 @@ class Server(Gate):
 
 
     def checkPackage(self):
-        if self.packageCounter != 0:
-            None
-        else:
-            checkPackageNumber = self.packageCounter == self.packageCounterReceived
-            checkTotalPackage = self.totalPackages == self.totalPackagesReceived
-            checkEop = self.eopCode == self.convertBytesToInt(self.eopReceived)
+        checkPackageNumber = self.packageCounter == self.packageCounterReceived
+        print("self.packageCounter{}".format(self.packageCounter))
+        print("self.packageCounterReceived{}".format(self.packageCounterReceived))
+        checkTotalPackage = self.totalPackages == self.totalPackagesReceived
+        checkEop = self.eopCode == self.convertBytesToInt(self.eopReceived)
         if checkEop:
             if checkTotalPackage:
                 if checkPackageNumber:

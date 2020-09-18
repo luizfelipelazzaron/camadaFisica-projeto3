@@ -14,6 +14,9 @@ from enlaceRx import RX
 
 serialName = "/dev/tnt1"
 
+
+
+
 def main():
     try:
         choice = 'S'
@@ -24,64 +27,44 @@ def main():
             print('|         Porta iniciada         |')
             print('+--------------------------------+')
             package = Package()
-            package.setPackage(0)
+            package.setPackage(0,0,9)
             client.sendPackage(package.package)
             client.com.rx.clearBuffer()
             client.receivePackage()
             client.closeGate()
             if client.connection:
-                choice = 'N'
+                choice = 'connection'
             else:
                 choice = input()
+
+        while choice == "connection":
+            for n in range(1,10):#pois são 9 pacotes
+                    print("pacote a ser enviado: {}".format(n))
+                    client = Client(serialName)
+                    client.openGate()
+                    client.setFile()
+                    client.sliceFile()
+                    package = Package()
+                    package.setPackagePayload(client.packageList,n,9) #pois são 9 pacotes
+                    client.sendPackage(package.package)
+                    client.com.rx.clearBuffer()
+                    client.receiveMessage()
+                    client.closeGate()
+            break
+
+        client = Client(serialName)
+        client.openGate()
+        package = Package()
+        package.setPackage(4,0,9)
+        client.sendPackage(package.package)
+        client.closeGate()
+
         print('+--------------------------------+')
         print('|         Encerramento           |')
         print('+--------------------------------+')
 
-        # print("client.messageReceived:{}".format(client.messageReceived))
 
 
-        
-
-        # message = Message()
-        # print("message:{}".format(message.message))
-        # message.handshake()
-        # print("message:{}".format(message.message))
-
-        # package = Package()
-        # package.setEop()
-        # package.setHead(1,1,message.message)
-        # package.setPackage()
-        # print("package.package:{}".format(package.package))
-        # print("type of package:{}".format(package.package))
-        # print(type(package.package))
-
-
-
-
-
-
-        # package = Package()
-        # package.setEop()
-        # package.setHead(1,1,message.message)
-        # package.setPackage()
-        # print(package.package)
-        # print(type(package.package))
-
-
-        # client.setFile()
-        # client.sliceFile()
-
-        # package = Package()
-        # package.setHead(1,12)
-
-
-
-
-        # client = Client('COM1')
-        # client.run()
-        # client.setMessage("handshake")
-        # client.sendMessage()
-        # client.closeGate()
     except Exception as e:
         print("Um erro aconteceu:")
         print('Failed to upload to ftp: '+str(e))

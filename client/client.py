@@ -27,9 +27,8 @@ class Client(Gate):
         self.packageList = []
         self.widthPayload = 30 #project restriction widthPayload <= 114
         self.message = Message()
-
         self.packageCounter = 0
-        self.totalPackages = 0
+        self.totalPackages = 9 #número de pacotes
         self.packageCounterReceived = 0
         self.totalPackagesReceived = 0
         self.messageReceived = 0
@@ -39,14 +38,10 @@ class Client(Gate):
 
     def setFile(self):
         """Carregando documento a ser enviado"""
-        print('+--------------------------------+')
-        print('|      Carregando Documento      |')
-        print('+--------------------------------+')
         try:
             self.file = open(self.filePath, 'rb').read() 
-            print('|      Documento Carregado!      |')
-            print('+--------------------------------+')
         except:
+            print('+--------------------------------+')
             print('|   Falha ao carregar Documento  |')
             print('+--------------------------------+')
 
@@ -93,7 +88,7 @@ class Client(Gate):
             print('+--------------------------------+')
             print('|       Head Recebido            |')
             print('+--------------------------------+')
-            self.setHead(receivedHead)
+            self.setHeadReceived(receivedHead)
             if self.payloadWidth != 0:
                 self.payloadReceived, number =  self.com.getData(self.payloadWidth)
             self.eopReceived, number = self.com.getData(self.eopWidth)
@@ -101,7 +96,25 @@ class Client(Gate):
             self.connection = True
 
 
-    def setHead(self,head):
+
+    def receiveMessage(self):
+        print("getIsEmpty:{}".format(self.com.rx.getIsEmpty()))
+        while self.com.rx.getIsEmpty():
+            print("esperando resposta..")
+            time.sleep(1)
+        else:
+            print("Resposta Recebida..")
+            receivedHead, number =  self.com.getData(self.headWidth)
+            self.setHeadReceived(receivedHead)
+            print("mensagem recebida: {}".format(self.messageReceived))
+            if self.payloadWidth != 0:
+                self.payloadReceived, number =  self.com.getData(self.payloadWidth)
+            self.eopReceived, number = self.com.getData(self.eopWidth)
+            self.checkPackage()
+
+
+
+    def setHeadReceived(self,head):
         self.packageCounterReceived = self.convertBytesToInt(head[0:2])
         self.totalPackagesReceived = self.convertBytesToInt(head[2:4])
         self.messageReceived = self.convertBytesToInt(head[4:6])

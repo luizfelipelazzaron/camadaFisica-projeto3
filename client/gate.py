@@ -42,7 +42,6 @@ class Gate(object):
     def openGate(self):
         """Open the gate"""
         self.com.enable()
-        print('Nome da Porta:{}'.format(self.com.fisica.name))
 
     def closeGate(self):
         """Fechando a porta no sistema"""
