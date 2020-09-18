@@ -17,6 +17,9 @@ def main():
     try:
         server = Server(serialName)
         server.openGate()
+        print('+--------------------------------+')
+        print('|         Porta iniciada         |')
+        print('+--------------------------------+')
 
         #Handshake
         server.receivePackage()
@@ -28,6 +31,10 @@ def main():
 
 
         server.closeGate()
+
+        print('+--------------------------------+')
+        print('|         Porta fechada          |')
+        print('+--------------------------------+')
 
     except Exception as e:
         print("Um erro aconteceu:")

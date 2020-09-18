@@ -23,7 +23,7 @@ class Server(Gate):
         #File Path
         self.file = r"C:\Users\User\Documents\graduacao\4Semestre\CamadaFIsicaDaComputacao\Projetos\projeto3\server\imageReceived.png"
         self.message = Message()
-        
+
         self.packageCounter = 0
         self.totalPackages = 0
         self.packageCounterReceived = 0
@@ -45,27 +45,23 @@ class Server(Gate):
             None
 
     def receivePackage(self):
-        time_start = time.time()
-        delta_t = 0
-        print("getIsEmpty:{}".format(self.com.rx.getIsEmpty()))
-        while self.com.rx.getIsEmpty() and delta_t <5:
-            time.sleep(1)
-            time_end = time.time()
-            delta_t = time_end - time_start
-            print("{}...".format(int(delta_t)))
-        if delta_t > 5 and self.com.rx.getIsEmpty():
-            print("não chegou meu velho")
-        else:
-            receivedHead, number =  self.com.getData(self.headWidth)
-            print('+--------------------------------+')
-            print('|       Head Recebido            |')
-            print('+--------------------------------+')
-            self.setHead(receivedHead)
-            if self.payloadWidth != 0:
-                self.payloadReceived, number =  self.com.getData(self.payloadWidth)
-            self.eopReceived, number = self.com.getData(self.eopWidth)
-            self.checkPackage()
+        receivedHead, number =  self.com.getData(self.headWidth)
+        print('+--------------------------------+')
+        print('|       Head Recebido            |')
+        print('+--------------------------------+')
+        self.setHead(receivedHead)
+        if self.payloadWidth != 0:
+            self.payloadReceived, number =  self.com.getData(self.payloadWidth)
+        self.eopReceived, number = self.com.getData(self.eopWidth)
+        self.checkPackage()
             
+
+    def setHead(self,head):
+        self.packageCounterReceived = self.convertBytesToInt(head[0:2])
+        self.totalPackagesReceived = self.convertBytesToInt(head[2:4])
+        self.messageReceived = self.convertBytesToInt(head[4:6])
+        self.payloadWidth = self.convertBytesToInt(head[6:self.headWidth])
+
 
     def checkPackage(self):
         if self.packageCounter != 0:

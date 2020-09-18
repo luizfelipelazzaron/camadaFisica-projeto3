@@ -35,6 +35,7 @@ class Client(Gate):
         self.messageReceived = 0
         self.payloadWidth = 0 
         self.check = False
+        self.connection = False
 
     def setFile(self):
         """Carregando documento a ser enviado"""
@@ -84,7 +85,9 @@ class Client(Gate):
             delta_t = time_end - time_start
             print("{}...".format(int(delta_t)))
         if delta_t > 5 and self.com.rx.getIsEmpty():
-            print("não chegou meu velho")
+            print('+-------------------------------------------+')
+            print("|  Servidor inativo. Tentar novamente? S/N  |")
+            print('+-------------------------------------------+')
         else:
             receivedHead, number =  self.com.getData(self.headWidth)
             print('+--------------------------------+')
@@ -95,7 +98,14 @@ class Client(Gate):
                 self.payloadReceived, number =  self.com.getData(self.payloadWidth)
             self.eopReceived, number = self.com.getData(self.eopWidth)
             self.checkPackage()
-            
+            self.connection = True
+
+
+    def setHead(self,head):
+        self.packageCounterReceived = self.convertBytesToInt(head[0:2])
+        self.totalPackagesReceived = self.convertBytesToInt(head[2:4])
+        self.messageReceived = self.convertBytesToInt(head[4:6])
+        self.payloadWidth = self.convertBytesToInt(head[6:self.headWidth])
 
     def checkPackage(self):
         if self.packageCounter != 0:

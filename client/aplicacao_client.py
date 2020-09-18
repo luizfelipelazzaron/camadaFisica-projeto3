@@ -16,24 +16,31 @@ serialName = "/dev/tnt1"
 
 def main():
     try:
-        client = Client(serialName)
-        client.openGate()
-
-        client.setFile()
-        
-        package = Package()
-        package.setPackage(0)
-
-        client.sendPackage(package.package)
-
-        client.com.rx.clearBuffer()
-
-        client.receivePackage()
+        choice = 'S'
+        while choice =='S':
+            client = Client(serialName)
+            client.openGate()
+            print('+--------------------------------+')
+            print('|         Porta iniciada         |')
+            print('+--------------------------------+')
+            package = Package()
+            package.setPackage(0)
+            client.sendPackage(package.package)
+            client.com.rx.clearBuffer()
+            client.receivePackage()
+            client.closeGate()
+            if client.connection:
+                choice = 'N'
+            else:
+                choice = input()
+        print('+--------------------------------+')
+        print('|         Encerramento           |')
+        print('+--------------------------------+')
 
         # print("client.messageReceived:{}".format(client.messageReceived))
 
 
-        client.closeGate()
+        
 
         # message = Message()
         # print("message:{}".format(message.message))
