@@ -10,6 +10,7 @@ import time
 from client import Client
 from message import Message
 from package import Package
+from enlaceRx import RX
 
 serialName = "/dev/tnt1"
 
@@ -18,15 +19,47 @@ def main():
         client = Client(serialName)
         client.openGate()
 
-        message = Message()
-        message.handshake()
-
-        package = Package()
-        package.setEop()
-        package.setHead(1,1,message.message)
-        package.setPackage()
+        client.setFile()
         
+        package = Package()
+        package.setPackage(0)
+
         client.sendPackage(package.package)
+
+        client.com.rx.clearBuffer()
+
+        client.receivePackage()
+
+        # print("client.messageReceived:{}".format(client.messageReceived))
+
+
+        client.closeGate()
+
+        # message = Message()
+        # print("message:{}".format(message.message))
+        # message.handshake()
+        # print("message:{}".format(message.message))
+
+        # package = Package()
+        # package.setEop()
+        # package.setHead(1,1,message.message)
+        # package.setPackage()
+        # print("package.package:{}".format(package.package))
+        # print("type of package:{}".format(package.package))
+        # print(type(package.package))
+
+
+
+
+
+
+        # package = Package()
+        # package.setEop()
+        # package.setHead(1,1,message.message)
+        # package.setPackage()
+        # print(package.package)
+        # print(type(package.package))
+
 
         # client.setFile()
         # client.sliceFile()

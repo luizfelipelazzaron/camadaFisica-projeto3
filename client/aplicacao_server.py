@@ -16,9 +16,19 @@ serialName = "/dev/tnt0"
 def main():
     try:
         server = Server(serialName)
-        message = Message()
-        message.handshake()
-        server.receiveMessage(10)
+        server.openGate()
+
+        #Handshake
+        server.receivePackage()
+        if server.check:
+            package = Package()
+            package.setPackage(0)
+            server.sendPackage(package.package)
+
+
+
+        server.closeGate()
+
     except Exception as e:
         print("Um erro aconteceu:")
         print('Failed to upload to ftp: '+str(e))

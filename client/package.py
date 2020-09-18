@@ -1,3 +1,4 @@
+from message import Message
 class Package(object):
     'Package class'
     def __init__(self):
@@ -9,9 +10,26 @@ class Package(object):
         self.eop = b''
         self.eopCode = 541526 #arbitray eop
         self.eopWidth = 4 #project restriction
+        
 
-    def setPackage(self):
-        self.package = self.head #+ self.payload + self.eop
+    def setPackage(self,stage):
+        "stage is an int"
+        if stage == 0:
+            message = Message()
+            message.handshake()
+            self.setHead(0,0,message.message)
+            self.setEop()
+        else: 
+            None
+        print('+--------------------------------+')
+        print('|     Preparando o Pacote        |')
+        print('+--------------------------------+')
+
+        print("head:{}".format(self.head))
+        print("payload:{}".format(self.payload))
+        print("eop:{}".format(self.eop))
+
+        self.package = self.head + self.payload + self.eop
         self.payloadWidth = len(self.payload)
 
     def setHead(self, n, t,message):
@@ -25,16 +43,13 @@ class Package(object):
         packageNumberWidth = 2
         totalOfPackagesWidth = 2
         messageWidth = 2
-        payloadWidth = self.headWidth - (packageNumberWidth +totalOfPackagesWidth + messageWidth)
-
-
-         #packageNumberWidth + totalOfPackagesWidth must be smaller than headWidth
+        payloadWidth = self.headWidth - (packageNumberWidth + totalOfPackagesWidth + messageWidth)  #packageNumberWidth + totalOfPackagesWidth must be smaller than headWidth
         packageNumber = self.convertIntToBytes(n,packageNumberWidth)
         totalOfPackages = self.convertIntToBytes(t,totalOfPackagesWidth)
         message = self.convertIntToBytes(message,totalOfPackagesWidth)
-        payloadWidth = self.convertIntToBytes(self.payloadWidth,payloadWidth)
+        payloadWidthBytes = self.convertIntToBytes(self.payloadWidth,payloadWidth)
 
-        self.head = packageNumber +  totalOfPackages + message + payloadWidth #because 
+        self.head = packageNumber +  totalOfPackages + message + payloadWidthBytes #because 
 
 
     def setPayload(self,n,packageList):

@@ -5,20 +5,28 @@ class Message(object):
 
     def handshake(self):
         'initialize conversation'
-        handshakeCode = 12312
+        handshakeCode = 123
         self.message = handshakeCode
+
 
     def success(self):
         'success message'
-        successCode = 12541
+        successCode = 125
         self.message = successCode
 
     def failure(self):
         'failure message'
-        failureCode = 14436
+        failureCode = 144
         self.message = failureCode
 
     def bye(self):
         'terminate conversation'
-        byeCode = 80890
+        byeCode = 808
         self.message = byeCode
+
+    def work(self):
+        """when we work, we don't talk"""
+        workCode = 999
+        self.message = workCode
+
+
