@@ -40,7 +40,7 @@ def main():
         while choice == "connection":
             for n in range(1,10):#pois são 9 pacotes
                 variable = True
-                while variable: 
+                while variable:
                     print("pacote a ser enviado: {}".format(n))
                     client = Client(serialName)
                     client.openGate()

@@ -58,6 +58,15 @@ def main():
                 server.sendPackage(package.package)
                 server.closeGate()
                 break
+            else:
+                package = Package()
+                package.setPackage(3,counter,9)
+                print('+--------------------------------------------+')
+                print('|     O pacote recebido não está correto     |'.format(counter))
+                print('+--------------------------------------------+')
+                server.sendPackage(package.package)
+                server.closeGate()
+
             print(lista)
             
 

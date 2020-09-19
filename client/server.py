@@ -21,7 +21,6 @@ class Server(Gate):
     def __init__(self,name):
         super().__init__(name)
         #File Path
-        self.filePath = r"/home/borg/Documents/graduacao/camadaFisicaDaComputacao/projeto3/camadaFisica-projeto3/client/imageReceived.png"
         self.message = Message()
         self.packageCounter = 0
         self.totalPackages = 9 #número de pacotes
